@@ -1,0 +1,19 @@
+x-defaults: &defaults
+  env_file: .env
+  restart: on-failure
+
+services:
+  postgres:
+    <<: *defaults
+    image: postgres:17
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
+      interval: 1s
+      retries: 20
+
+volumes:
+  postgres_data:

@@ -1,0 +1,151 @@
+[project]
+name = "flashcard_workshop"
+version = "0.1.0"
+description = ""
+requires-python = ">=3.12, <4.0"
+dependencies = [
+    "Django",
+    "djangorestframework",
+    "drf-spectacular",
+    "django-extensions",
+    "django-debug-toolbar",
+    "psycopg2-binary",
+    "ipython",
+    "environs",
+    "pyyaml",
+    "drf-nested-routers>=0.94.1",
+    "django-cors-headers>=4.7.0",
+    "djangorestframework-camel-case>=1.4.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-django",
+    "pytest-xdist",
+    "pre-commit",
+    "factory-boy",
+    "ruff",
+    "mypy",
+    "django-stubs",
+    "djangorestframework-stubs[compatible-mypy]",
+]
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+extend-exclude = [
+    "__pycache__",
+    "build",
+]
+[tool.ruff.lint]
+select = [
+    "A", # flake8 builtins
+    "S",   # flake8-bandit
+    "DJ",  # flake8-django
+    "PT",  # flake8-pytest-style
+    "TID", # flake8-tidy-imports
+    "INT", # flake8-gettext
+    "PTH", # flake8-use-pathlib
+    "T10", # flake8-debugger
+    "ERA", # flake8-eradicate
+    "C4", # flake8-comprehensions
+    "B", # flake8-bugbear
+    "G", # flake8-logging-format
+    "E", # pycodestyle error
+    "W", # pycodestyle warning
+    "F", # pyflakes
+    "N", # pep8-naming
+    "UP", # pyupgrade
+    "I", # isort
+    "C9", # mccabe
+    "I", # isort
+]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = [
+    "S101",     # "Use of `assert` detected"
+    "ARG",      # "Unused function argument". Fixtures can be unused.
+    "S105",     # "Possible hardcoded password".
+]
+"**settings/**" = [
+    "F405",     # variable may be undefined due to * import
+    "F403",      # allow * imports
+    "TID252",   # Allow relative imports
+]
+"**/settings/tests.py" = [
+    "S105",
+]
+"**/settings/local.py" = [
+    "S105",
+]
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = [
+    "classmethod",
+    "pydantic.validator",
+    "pydantic.root_validator",
+]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:"
+]
+omit = [
+    "manage.py",
+    "**/wsgi.py",
+    "**/asgi.py",
+    "**/settings/*.py",
+    "**/migrations/*.py",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "flashcard_workshop.settings.tests"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+norecursedirs = [".git/*",
+                 ".mypy_cache/*",
+                 ".pytest_cache/*",
+                 "migrations/*",
+                 "settings/*",
+]
+addopts = "--nomigrations"
+
+[tool.mypy]
+plugins = [
+    "mypy_django_plugin.main",
+    "mypy_drf_plugin.main",
+]
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+
+[tool.django-stubs]
+django_settings_module = "flashcard_workshop.settings.local"
+
+[[tool.mypy.overrides]]
+module = [
+    "*.migrations.*",
+    "*.settings.*",
+]
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "factory.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "django_extensions.*",
+    "factory.*",
+]
+ignore_missing_imports = true
