@@ -23,5 +23,6 @@ DATABASES = {
         "USER": env("POSTGRES_USER", "flashcard_workshop"),
         "PASSWORD": env("POSTGRES_PASSWORD", "flashcard_workshop"),
         "HOST": env("POSTGRES_HOST", "localhost"),
+        "PORT": env("POSTGRES_PORT", "5432"),
     }
 }

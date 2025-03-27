@@ -9,6 +9,13 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     --mount=type=ssh uv sync --frozen --no-dev
 
+FROM builder AS production_builder
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    --mount=type=ssh uv sync --frozen --group=prod
+
 FROM builder AS development
 
 COPY . /app/
@@ -24,4 +31,4 @@ ENV PYTHONUNBUFFERED=1 SENTRY_RELEASE=${VERSION} PATH="/app/.venv/bin:$PATH" VIR
 WORKDIR /app/
 
 COPY . .
-COPY --from=builder --chown=app:app /app/ /app/
+COPY --from=production_builder --chown=app:app /app/ /app/

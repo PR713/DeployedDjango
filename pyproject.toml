@@ -31,6 +31,10 @@ dev = [
     "django-stubs",
     "djangorestframework-stubs[compatible-mypy]",
 ]
+prod = [
+    "gunicorn",
+    "whitenoise",
+]
 [tool.ruff]
 target-version = "py312"
 line-length = 120
