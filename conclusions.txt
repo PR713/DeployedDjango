@@ -1,0 +1,21 @@
+# uv run python manage.py makemigrations #aktualizacja struktury bazy danych,
+# tutaj wykorzystana baza PostgreSQL
+# uv run python manage.py migrate lub make migrate
+# make #żeby odpalić server backendowy (jak WDAI server.js, potem fetch z servera frontowego)
+# by default samo make robi .DEFAULT_GOAL := runserver a to zaś... opisane w Makefile
+
+# TODO tutaj natomiast można bez rozdzielania i front i backend na localhost:8000/swagger/
+# mamy swaggera, zamiast "" lub można dać też jak te niżej na api/ bo router.urls
+# ma potem coś dodane po 'api/' :
+# path("", include(router.urls)),
+# path("", include(groups_router.urls)), oba robimy na api/
+
+# natomiast dodajemy    path('', include('frontend.urls')) od frontu
+# i wszystko śmiga na jednym serwerze, lub standardowo jak z React Vite wydzielić
+# serwer developerski
+
+# swagger to taki postman od razu w przeglądarce z panelem gdzie można testować endpointy
+
+# ~  To wina frontendu!
+# ~  Na samym szczycie jest Django, potem długo nic, potem TypeScript,
+#    potem kartka papieru i długopis, a potem Java...

@@ -3,7 +3,7 @@ BRANCH_NAME := $(shell git rev-parse --abbrev-ref HEAD)
 TAGS := -t $(DOCKER_REGISTRY):$(COMMIT_SHA) -t $(DOCKER_REGISTRY):$(BRANCH_NAME)
 MANAGE_PY := uv run python manage.py
 
-.DEFAULT_GOAL := runserver
+.DEFAULT_GOAL := runserver ## by default 'make'
 
 clean: clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
