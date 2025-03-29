@@ -22,9 +22,12 @@
 # __ określa odwołanie do pola w ScorePerFlashCard
 # ale __ również może mieć znaczenie jako inner join i potem __ odwołanie do pola danego
 # czyli dla każdej fiszki patrzy na wszystkie powiązane rekordy ze ScorePerFlashCard
-# i szuka tam usera i czy ma score = 0 lub nie znalazło go czyli nie robił tej fiszki
-# -- nie może tak być, jeśli to on ją stworzył no to default score = 0, nie robimy tutaj 
-# publicznych fiszek, wtedy trzeba by sprawdzać czy fiszka ma referencję do scores
+# i szuka tam usera i czy ma score = 0 (*lub nie znalazło go czyli nie robił tej fiszki),
+# aczkolwiek tutaj załóżmy że jeśli utworzył fiszkę to już pojawia się mu score = 0, po prostu endpoint
+# odpalamy z POST na score
+# bo teoretycznie dopiero jak rozpocznie fiszkę to pojawi się jego rekord tutaj więc niżej opisane:
+
+# nie robimy tutaj publicznych fiszek, wtedy trzeba by sprawdzać czy fiszka ma referencję do scores
 # (czyli czy istnieje przez related_name='scores' taki user, jeśli nie to dodajemy,
 #  Q(scores__user=user, scores__score=0) | no_score_for_user,
 # gdzie no_score_for_user = ~Exists(
@@ -32,8 +35,15 @@
 #        flashcard=OuterRef('pk'),
 #        user=user
 #    )
-#), ale wtedy znów dostanie fiszki których nie dodał do zrobienia, a jeśli dodał no to default score = 0
-# bo tworzy się powiązanie FK w bazie, więc to taka ciekawostka że takie coś istnieje jak ~Exists...
+#), ale wtedy znów dostanie fiszki których nie dodał do zrobienia...
+
+# realizacja publicznych fiszek to de facto można użyć tego samego endpointu onClick 'button dodaj', który ma onClick
+# z fetch albo axios.post na url ten sam co 'utwórz fiszkę' tylko że przekazujemy np autora (pole dodatkowe
+# robimy tak o) i jeśli chcemy znaleźć jakie grupy/fiszki ma user zapisane
+# to pasowałoby dodać model SavedFlashcardGroups z ForeignKey na FlashcardGroups i zrobić endpoint który tutaj dodaje
+# automatycznie czyli onClick robi dwa POSTy
+# i NAJPIERW filtrować po tych co ma dodane, a potem po tych, które mają score = 0 lub jeśli dodanie samo nie sprawia
+# dodania score = 0 to sprawdzać OR ~Exists.. i git bo teraz ~Exists dostaje id fiszek które faktycznie ma na liście saved
 
 # ~  To wina frontendu!
 # ~  Na samym szczycie jest Django, potem długo nic, potem TypeScript,
