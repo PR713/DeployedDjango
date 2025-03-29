@@ -74,7 +74,7 @@ class FlashcardGroupViewSet(viewsets.ModelViewSet):
         unknown_flashcards = (
             Flashcard.objects.filter(group=group)
             .filter(  # __ inner join lub atrybut modelu
-                Q(scores__user=user, scores__score=0) | ~Q(scores__user=user),
+                scores__user=user, scores__score=0
             )
             .order_by("?")[:10]
         )
