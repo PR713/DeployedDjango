@@ -16,6 +16,16 @@
 
 # swagger to taki postman od razu w przeglądarce z panelem gdzie można testować endpointy
 
+# Flashcard.objects.filter(scores__user=user, scores__score=0)
+# related_name="scores" tworzy odwrotną relację z Flashcard do ScorePerFlashcard
+# bo ScorePerFlashCard ma ForeignKey z FlashCard
+# __ określa odwołanie do pola w ScorePerFlashCard
+# ale __ również może mieć znaczenie jako inner join i potem __ odwołanie do pola danego
+# czyli dla każdej fiszki patrzy na wszystkie powiązane rekordy ze ScorePerFlashCard
+# i szuka tam usera i czy ma score = 0 lub nie znalazło go czyli nie robił tej fiszki
+# można dać score <= 2 czyli dopiero jak 3 razy odpowie dobrze to jej nie dostanie
+# p && q || ~p
+
 # ~  To wina frontendu!
 # ~  Na samym szczycie jest Django, potem długo nic, potem TypeScript,
 #    potem kartka papieru i długopis, a potem Java...

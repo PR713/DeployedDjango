@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import status, viewsets
@@ -70,11 +71,13 @@ class FlashcardGroupViewSet(viewsets.ModelViewSet):
         user = get_object_or_404(CustomUser, username=username)
         group = self.get_object()
 
-        unknown_flashcards = Flashcard.objects.filter(
-            group=group,
-            scores__user=user,  # __ inner join lub atrybut modelu
-            scores__score=0,
-        ).order_by("?")[:10]
+        unknown_flashcards = (
+            Flashcard.objects.filter(group=group)
+            .filter(  # __ inner join lub atrybut modelu
+                Q(scores__user=user, scores__score=0) | ~Q(scores__user=user),
+            )
+            .order_by("?")[:10]
+        )
 
         serializer = FlashcardSerializer(list(unknown_flashcards), many=True)
         return Response(serializer.data)
