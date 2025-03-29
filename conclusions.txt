@@ -32,7 +32,9 @@
 #        flashcard=OuterRef('pk'),
 #        user=user
 #    )
-#)
+#), ale wtedy znów dostanie fiszki których nie dodał do zrobienia, a jeśli dodał no to default score = 0
+# bo tworzy się powiązanie FK w bazie, więc to taka ciekawostka że takie coś istnieje jak ~Exists...
+
 # ~  To wina frontendu!
 # ~  Na samym szczycie jest Django, potem długo nic, potem TypeScript,
 #    potem kartka papieru i długopis, a potem Java...
