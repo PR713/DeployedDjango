@@ -37,6 +37,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "flashcard_workshop.accounts.apps.AccountsConfig",
+    "flashcard_workshop.flashcards.apps.FlashcardsConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
